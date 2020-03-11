@@ -1,11 +1,47 @@
-server:
-  port: 8002
 spring:
-  profiles: dev #开发环境
-  application:
-    name: config-dev1
-constant:
-  name: xiangjing
-  password: '{cipher}AgDR3qY85GjUZf0v+7sEpW5pzN9PAqHlDZQsk/rjlzTfJ74DVTvv0QBk5EtdevgzbhPHB3zj0s40mGWCym47IOhcx3hp75zDrvpDl2P8EzBdSKMxP78yYmTajO+2h/RMsyokPYmbmRv9fzvbpv4tFI/hrWT3s5OfH5DUrDjEcl1LJlDMxNI2lqxwybQZEBE7zYtOSVlyEPHB7LI7aZLpdO2rZAl1/oDPsud9nrfiErBITMnHet6WTOHNXilFLsEpL5AGQZH7mK6yfZE5RdUGL0vIJ7fp0170/WR3toY15qanfUhnP9fK9Lygiyc9IyW6Mk000EKJXwGlzAiyg7Qcb83PDHFAS+mHP5QNzP6zAABcrhM5eMEgMRsp1hOezIO+4tiVxMBrZNQPIo1uHnqg2YRDNWj4/BGAYXUJ8Ft6N5kXJ7/GoWiQnXD1HuECEjhOTZTw4lQyR61NFvvE2Q9TP1uWQdwv5woafUN+i91AfQFBivO9ZJZPpOmFyvszEm9Xh6gaxlyQbuPV6NI2uwyKZvLE5iKTOR58MOSERUziRnuVNFDA2yYaBv/9NvgVGeGQkR1wlq14tWaOnArSkPFBdVbW+KCYBJ/nIrCly6ItlVBp8Hj270v9jC8Tur7iGg6aFn7f6TK/zkYmG/LhwSByOHee3hKZ/Y9F9nADmMwpS9gQBtKUuJHcU0hKw92TqzxhF8+vsr5RzDHbt1ZXYg8GKVOQ'
+  #数据源
+  datasource:
+    url: jdbc:mysql://120.27.9.60:3306/boqu?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&allowMultiQueries=true
+    username: root
+    password: Maigao_998
+    driver-class-name: com.mysql.jdbc.Driver
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    # 初始化大小，最小，最大
+    druid:
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 10000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,log4j2,config
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;
+      # 合并多个DruidDataSource的监控数据
+      #useGlobalDataSourceStat: true
 
-  
+#mybatis
+mybatis:
+  #指定目录类型别名扫描
+#  type-aliases-package: com.mg.boqu
+  #指定mapper.xml的位置
+  mapper-locations: classpath*:com/mg/boqu/dao/**/mapper/*.xml
+
+#注册中心
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:admin@localhost:1001/eureka
