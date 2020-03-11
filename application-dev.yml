@@ -1,3 +1,5 @@
+server:
+  port: 1104
 spring:
   profiles: dev
   #数据源
